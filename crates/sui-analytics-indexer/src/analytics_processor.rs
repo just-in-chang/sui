@@ -140,7 +140,7 @@ impl<S: Serialize + ParquetSchema + 'static> AnalyticsProcessor<S> {
             && self.writer.flush(self.current_checkpoint_range.end)?
         {
             let file_metadata = FileMetadata::new(
-                self.config.file_type,
+                self.config.file_type.unwrap(),
                 self.config.file_format,
                 self.current_epoch,
                 self.current_checkpoint_range.clone(),
@@ -158,7 +158,7 @@ impl<S: Serialize + ParquetSchema + 'static> AnalyticsProcessor<S> {
     fn epoch_dir(&self) -> Result<PathBuf> {
         let path = path_to_filesystem(
             self.config.checkpoint_dir.to_path_buf(),
-            &self.config.file_type.dir_prefix(),
+            &self.config.file_type.unwrap().dir_prefix(),
         )?
         .join(format!("{}{}", EPOCH_DIR_PREFIX, self.current_epoch));
         Ok(path)

@@ -96,7 +96,7 @@ pub struct AnalyticsIndexerConfig {
     pub file_format: FileFormat,
     // Type of data to write i.e. checkpoint, object, transaction, etc
     #[clap(long, value_enum, long, global = true)]
-    pub file_type: FileType,
+    pub file_type: Option<FileType>,
     // Directory to contain the package cache for pipelines
     #[clap(
         long,
@@ -565,7 +565,7 @@ pub async fn make_analytics_processor(
     config: AnalyticsIndexerConfig,
     metrics: AnalyticsMetrics,
 ) -> Result<Processor> {
-    match config.file_type {
+    match config.file_type.unwrap() {
         FileType::Checkpoint => make_checkpoint_processor(config, metrics).await,
         FileType::Object => make_object_processor(config, metrics).await,
         FileType::Transaction => make_transaction_processor(config, metrics).await,
