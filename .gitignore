@@ -65,3 +65,6 @@ yarn-error.log*
 # misc
 *.key
 .env
+
+# sui-analytics-indexer package cache
+package_cache/
